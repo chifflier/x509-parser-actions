@@ -108,6 +108,8 @@ struct OidEntry {
     nid: Nid,
 }
 
+pub const CLIPPY_WARNING: &'static [u8] = &[1, 2];
+
 pub const OID_ALGO: Oid<'static> = oid!(1.3.14.3.2);
 pub const OID_X500: Oid<'static> = oid!(2.5);
 pub const OID_X509: Oid<'static> = oid!(2.5.4);
