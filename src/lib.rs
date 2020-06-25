@@ -52,12 +52,42 @@
 //!
 //! See also `examples/print-cert.rs`.
 //!
+//! # Features
+//!
+//! - The `verify` feature adds support for (cryptographic) signature verification, based on ring.
+//!   It adds the `verify_signature` to `X509Certificate`.
+//!
+//! ```rust
+//! # #[cfg(feature = "verify")]
+//! # use x509_parser::X509Certificate;
+//! /// Cryptographic signature verification: returns true if certificate was signed by issuer
+//! #[cfg(feature = "verify")]
+//! pub fn check_signature(cert: &X509Certificate<'_>, issuer: &X509Certificate<'_>) -> bool {
+//!     let issuer_public_key = &issuer.tbs_certificate.subject_pki;
+//!     cert
+//!         .verify_signature(Some(issuer_public_key))
+//!         .is_ok()
+//! }
+//! ```
+//!
 //! [RFC5280]: https://tools.ietf.org/html/rfc5280
 
 #![deny(/*missing_docs,*/
         unstable_features,
         unused_import_braces, unused_qualifications)]
+#![warn(
+    missing_debug_implementations,
+    /* missing_docs,
+    rust_2018_idioms,*/
+    unreachable_pub
+)]
 #![forbid(unsafe_code)]
+#![deny(intra_doc_link_resolution_failure)]
+#![doc(test(
+    no_crate_inject,
+    attr(deny(warnings, rust_2018_idioms), allow(dead_code, unused_variables))
+))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 pub use x509::*;
 pub mod x509;
@@ -68,3 +98,5 @@ pub mod objects;
 pub mod pem;
 mod x509_parser;
 pub use crate::x509_parser::*;
+mod verify;
+pub use verify::*;
