@@ -23,7 +23,7 @@ jobs:
         run: cargo update
       - name: Cargo update (fix for MSRV)
         run: cargo update -p lexical-core --precise 0.6.7
-        if: matrix.rust == '1.34.0'
+        if: matrix.rust == ${{ matrix.rust }}
       - uses: actions-rs/cargo@v1
         with:
           command: check
